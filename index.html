@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Joseph Pastor Torres: IT infrastructure and support engineer</title>
+<meta name="description" content="Senior IT infrastructure and technical support engineer in Singapore. Enterprise storage, servers, networking and AI tooling. Open to a permanent role.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#E4ECF3; --surface:#F6FAFD; --ink:#0F2233; --muted:#46607A; --line:#B3C5D6;
+  --accent:#9A5600; --on-accent:#FFFFFF; --link:#0A6A82;
+  --hw:#0A1320; --hw-face:#122338; --hw-line:#2B4866; --hw-ink:#D9E8F5; --hw-muted:#86A0BA;
+  --led-green:#4BE07F; --led-amber:#FFB224; --led-cyan:#52DDF5;
+  --sans:"Bricolage Grotesque","Segoe UI",system-ui,-apple-system,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B1724; --surface:#122234; --ink:#E7EFF7; --muted:#96ACC1; --line:#284259;
+    --accent:#FFB224; --on-accent:#0B1724; --link:#52DDF5; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B1724; --surface:#122234; --ink:#E7EFF7; --muted:#96ACC1; --line:#284259;
+  --accent:#FFB224; --on-accent:#0B1724; --link:#52DDF5; color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.6 var(--sans);-webkit-text-size-adjust:100%}
+a{color:var(--link)}
+a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--link);outline-offset:3px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--hw);color:var(--hw-ink);padding:.6rem 1rem;border-radius:4px;z-index:50}
+.skip:focus{left:8px}
+
+/* rack rail with XP meter */
+.rail{display:none;position:fixed;top:0;bottom:0;left:0;width:44px;background:var(--hw);border-right:1px solid var(--hw-line);z-index:5}
+.rail::before{content:"";position:absolute;left:0;right:0;top:64px;bottom:0;
+  background:
+   repeating-linear-gradient(to bottom,var(--hw-muted) 0 1px,transparent 1px 70px) left/18px 100% no-repeat,
+   repeating-linear-gradient(to bottom,var(--hw-line) 0 1px,transparent 1px 14px) left/10px 100% no-repeat;opacity:.9}
+.rail-label{position:absolute;top:10px;left:0;right:0;text-align:center;color:var(--hw-ink);font-size:.72rem;line-height:1.25;font-weight:600}
+.rail-label b{color:var(--led-amber);font-weight:700}
+.rail-fill{position:absolute;left:28px;top:64px;width:5px;border-radius:3px;background:var(--led-amber);box-shadow:0 0 10px rgba(255,178,36,.7);height:calc((100% - 64px) * var(--p,0))}
+.topbar{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);height:4px;background:var(--hw);z-index:5}
+.topbar i{display:block;height:100%;width:calc(var(--p,0) * 100%);background:var(--led-amber)}
+@media (min-width:900px){.rail{display:block}.topbar{display:none}.page{margin-left:44px}}
+
+.wrap{max-width:1080px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+
+/* LEDs */
+.led{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--led-green);box-shadow:0 0 8px var(--led-green);flex:none}
+.led.amber{background:var(--led-amber);box-shadow:0 0 8px var(--led-amber)}
+.led.cyan{background:var(--led-cyan);box-shadow:0 0 8px var(--led-cyan)}
+.led.pulse{animation:pulse 2.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr);gap:36px;padding:clamp(40px,8vw,84px) 0 24px}
+@media (min-width:900px){.hero{grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:center}}
+.status{display:inline-flex;align-items:center;gap:.6rem;background:var(--hw);color:var(--hw-ink);border:1px solid var(--hw-line);border-radius:4px;padding:.45rem .8rem;font-weight:500;font-size:.95rem}
+h1{font-size:clamp(2.7rem,6.4vw,4.9rem);line-height:.98;letter-spacing:-.035em;font-weight:700;margin:.35em 0 .3em;font-variation-settings:"opsz" 96}
+.lede{font-size:clamp(1.15rem,2vw,1.35rem);line-height:1.4;max-width:30ch;margin:0 0 .7em;font-weight:500}
+.sub{color:var(--muted);max-width:44ch;margin:0 0 1.4em}
+.hero nav{display:flex;flex-wrap:wrap;gap:.4rem .5rem}
+.hero nav a{color:var(--ink);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:.3rem .85rem;font-size:.95rem;background:var(--surface)}
+.hero nav a:hover{border-color:var(--accent);color:var(--accent)}
+
+/* terminal */
+.term{background:var(--hw);color:var(--hw-ink);border:1px solid var(--hw-line);border-radius:8px;overflow:hidden;font-family:var(--mono);font-size:.84rem;line-height:1.55;box-shadow:0 22px 44px -26px rgba(5,12,20,.7)}
+.term-bar{display:flex;align-items:center;gap:.55rem;padding:.6rem .85rem;background:var(--hw-face);border-bottom:1px solid var(--hw-line);font-family:var(--sans);font-size:.88rem;color:var(--hw-muted)}
+.term-bar span:last-child{margin-left:.4rem}
+.term-out{height:350px;overflow:auto;padding:.85rem .95rem;white-space:pre-wrap;word-break:break-word}
+.term-out .cmd{color:var(--led-amber)}
+.term-out .ps{color:var(--led-green)}
+.term-out .dim{color:var(--hw-muted)}
+.term-out a{color:var(--led-cyan)}
+.term-out b{color:#fff;font-weight:600}
+.term-in{display:flex;gap:.5rem;align-items:center;padding:.55rem .95rem;border-top:1px solid var(--hw-line);margin:0}
+.term-in label{color:var(--led-green);white-space:nowrap}
+.term-in input{flex:1;min-width:0;background:transparent;border:0;color:var(--hw-ink);font:inherit;outline:none;caret-color:var(--led-amber)}
+.term-in:focus-within{box-shadow:inset 0 0 0 2px var(--led-cyan)}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;padding:.65rem .95rem .85rem;border-top:1px solid var(--hw-line)}
+.chip{font-family:var(--mono);font-size:.78rem;color:var(--hw-ink);background:var(--hw-face);border:1px solid var(--hw-line);border-radius:999px;padding:.32rem .75rem;cursor:pointer}
+.chip:hover{border-color:var(--led-amber)}
+.chip:focus-visible{outline:2px solid var(--led-cyan);outline-offset:2px}
+@media (max-width:600px){.term-in input{font-size:16px}.term-out{height:300px}}
+
+/* rack units (sections) */
+.unit{margin:56px 0;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding-bottom:30px}
+.plate{display:flex;align-items:center;gap:.7rem;padding:.7rem 1.1rem;background:var(--hw);color:var(--hw-ink);border-radius:7px 7px 0 0;font-weight:600;font-size:.95rem}
+.plate .grow{flex:1}
+.plate .meta{font-weight:400;color:var(--hw-muted);font-size:.88rem}
+.unit-body{padding:26px clamp(18px,3vw,34px) 0}
+h2{font-size:clamp(1.8rem,3.6vw,2.6rem);line-height:1.05;letter-spacing:-.025em;margin:0 0 .45em;font-weight:700}
+.intro{max-width:62ch;color:var(--muted);margin:0 0 26px}
+
+/* journey */
+.levels{list-style:none;margin:0;padding:0;position:relative}
+.levels::before{content:"";position:absolute;left:21px;top:20px;bottom:20px;width:2px;background:var(--line)}
+.levels>li{position:relative;margin:0 0 10px}
+.level summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;align-items:start;padding:6px 8px 6px 0;border-radius:6px}
+.level summary::-webkit-details-marker{display:none}
+.level summary:hover .role{color:var(--accent)}
+.lv{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:2px solid var(--line);font-weight:700;position:relative;z-index:1}
+.level[open] .lv{border-color:var(--accent);color:var(--accent)}
+.level.current .lv{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.head{display:flex;flex-direction:column;gap:.1rem;padding-top:2px}
+.role{font-weight:650;font-size:1.12rem;line-height:1.25}
+.org{color:var(--muted);font-size:.95rem}
+.when{color:var(--muted);font-size:.9rem}
+.here{display:inline-flex;align-self:flex-start;align-items:center;gap:.4rem;margin-top:.35rem;background:var(--hw);color:var(--hw-ink);border-radius:999px;padding:.15rem .7rem;font-size:.82rem;font-weight:500}
+.tog{width:28px;height:28px;margin-top:8px;border:1px solid var(--line);border-radius:50%;position:relative}
+.tog::before,.tog::after{content:"";position:absolute;left:7px;right:7px;top:13px;height:2px;background:var(--muted)}
+.tog::after{transform:rotate(90deg);transition:transform .2s}
+.level[open] .tog::after{transform:rotate(0)}
+.more{margin:2px 0 10px 58px;max-width:64ch}
+.more ul{margin:.3rem 0 .8rem;padding-left:1.1rem}
+.more li{margin:.25rem 0}
+.quest{margin:.2rem 0;color:var(--accent);font-style:italic;font-weight:500}
+.unl{margin:0;color:var(--muted);font-size:.95rem}
+.unl b{color:var(--ink);font-weight:600}
+
+/* achievements */
+.tools{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem 1.2rem;margin:0 0 22px}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.15rem;border-radius:6px;font:inherit;font-weight:650;text-decoration:none;border:2px solid var(--accent);background:var(--accent);color:var(--on-accent);cursor:pointer}
+.btn.alt{background:transparent;color:var(--accent)}
+.btn:hover{filter:brightness(1.08)}
+.count{color:var(--muted)}
+.badges{list-style:none;margin:0;padding:0;display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.badge{display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+.hex{width:48px;height:54px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:var(--line);color:var(--muted);display:grid;place-items:center}
+.badge.on .hex{background:var(--accent);color:var(--on-accent)}
+.hex svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.badge h3{margin:0;font-size:.98rem;line-height:1.25;font-weight:650}
+.badge .d{margin:.2rem 0 0;font-size:.88rem;color:var(--muted);line-height:1.35}
+.badge .y{display:block;margin-top:.3rem;font-size:.82rem;color:var(--muted)}
+.badge .state{font-weight:600;color:var(--muted)}
+.badge.on .state{color:var(--accent)}
+.badge.pop{animation:pop .5s ease}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.035)}100%{transform:scale(1)}}
+
+/* skills rack */
+.rack{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+.bay{position:relative;text-align:left;font:inherit;font-weight:600;font-size:.98rem;line-height:1.25;color:var(--hw-ink);background:var(--hw-face);border:1px solid var(--hw-line);border-left:8px solid var(--hw-line);border-radius:4px;padding:14px 34px 12px 12px;cursor:pointer;min-height:86px;display:flex;align-items:flex-end}
+.bay .led{position:absolute;right:11px;top:11px}
+.bay:hover{border-color:var(--led-amber)}
+.bay[aria-pressed="true"]{border-color:var(--led-amber);box-shadow:inset 0 0 0 1px var(--led-amber)}
+.bay[aria-pressed="true"] .led{background:var(--led-amber);box-shadow:0 0 8px var(--led-amber)}
+.bay-detail{margin-top:16px;padding:16px 20px;border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:4px;background:var(--bg);min-height:8rem}
+.bay-detail h3{margin:0 0 .3rem;font-size:1.15rem}
+.bay-detail p{margin:0;max-width:62ch}
+
+/* ai lab */
+.lab{display:grid;gap:32px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:860px){.lab{grid-template-columns:minmax(0,3fr) minmax(0,2fr);align-items:start}}
+.lab ul{padding-left:1.1rem;margin:0 0 1.2rem}
+.lab li{margin:.35rem 0}
+.learn{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0 0;padding:0;list-style:none}
+.learn li{margin:0;border:1px dashed var(--accent);color:var(--accent);border-radius:999px;padding:.2rem .8rem;font-size:.92rem;font-weight:500}
+.diagram{width:100%;height:auto;max-width:360px;justify-self:center}
+.bx{fill:var(--hw-face);stroke:var(--hw-line);stroke-width:1.5}
+.bx.hot{stroke:var(--led-amber)}
+.t1{fill:var(--hw-ink);font:600 15px var(--sans)}
+.t2{fill:var(--hw-muted);font:400 12.5px var(--sans)}
+.ln{stroke:var(--muted);stroke-width:2;fill:none}
+.ln.dash{stroke-dasharray:5 5}
+.ah{fill:var(--muted)}
+
+/* contact */
+.contact{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:8px}
+.mail{margin:18px 0 0;color:var(--muted)}
+footer{padding:8px 0 56px;color:var(--muted);font-size:.92rem}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,16px);opacity:0;background:var(--hw);color:var(--hw-ink);border:1px solid var(--led-amber);border-radius:8px;padding:.7rem 1.1rem;width:max-content;max-width:min(92vw,420px);z-index:20;pointer-events:none;transition:opacity .25s,transform .25s;font-size:.95rem;line-height:1.35}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast b{color:var(--led-amber)}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></symbol>
+  <symbol id="i-cert" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></symbol>
+  <symbol id="i-chip" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></symbol>
+</svg>
+
+<a class="skip" href="#main">Skip to content</a>
+<div class="rail" aria-hidden="true"><div class="rail-label">XP<br><b id="xp">0</b>%</div><div class="rail-fill"></div></div>
+<div class="topbar" aria-hidden="true"><i></i></div>
+
+<div class="page">
+<div class="wrap">
+<main id="main">
+
+  <section class="hero" aria-labelledby="name">
+    <div>
+      <div class="status"><span class="led pulse"></span>Open to a permanent role in Singapore</div>
+      <h1 id="name">Joseph Pastor Torres</h1>
+      <p class="lede">Senior IT Field engineer - Lead.</p>
+      <p class="sub">More than twenty years of keeping other people’s systems running: enterprise storage, servers, networks, IOTs, and the people who depend on them. Recently adding AI to the toolbox.</p>
+      <nav aria-label="Sections">
+        <a href="#journey">Journey</a><a href="#achievements">Achievements</a><a href="#skills">Skills</a><a href="#lab">AI lab</a><a href="#contact">Contact</a>
+      </nav>
+    </div>
+
+    <div class="term" id="term">
+      <div class="term-bar"><span class="led"></span><span class="led amber"></span><span class="led cyan"></span><span>rack-01, interactive terminal</span></div>
+      <div class="term-out" id="out" role="log" aria-live="off" aria-label="Terminal output" tabindex="0"></div>
+      <form class="term-in" id="form" autocomplete="off">
+        <label for="cmd">joseph@rack:~$</label>
+        <input id="cmd" type="text" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Type a command">
+      </form>
+      <div class="chips" id="chips">
+        <button class="chip" type="button" data-cmd="help">help</button>
+        <button class="chip" type="button" data-cmd="status">status</button>
+        <button class="chip" type="button" data-cmd="ls certs">ls certs</button>
+        <button class="chip" type="button" data-cmd="achievements">achievements</button>
+        <button class="chip" type="button" data-cmd="ai">ai</button>
+        <button class="chip" type="button" data-cmd="contact">contact</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="unit" id="journey" aria-labelledby="h-journey">
+    <div class="plate"><span class="led"></span><span class="grow">Journey</span><span class="meta">7 stages loaded</span></div>
+    <div class="unit-body">
+      <h2 id="h-journey">From a service desk to enterprise storage</h2>
+      <p class="intro">Seven stages, start from service desk in 2003 to enterprise storage in Singapore today. Open a stage to see what happened there.</p>
+      <ol class="levels" id="levels"></ol>
+    </div>
+  </section>
+
+  <section class="unit" id="achievements" aria-labelledby="h-ach">
+    <div class="plate"><span class="led amber"></span><span class="grow">Achievements</span><span class="meta" id="count-plate">0 of 15 unlocked</span></div>
+    <div class="unit-body">
+      <h2 id="h-ach">Unlocked along the way</h2>
+      <p class="intro">These unlock as you scroll through the journey. One is hidden, and the terminal knows where.</p>
+      <div class="tools">
+        <button class="btn" type="button" id="unlock-all">Unlock all</button>
+        <span class="count" id="count">0 of 15 unlocked</span>
+      </div>
+      <ul class="badges" id="badges"></ul>
+    </div>
+  </section>
+
+  <section class="unit" id="skills" aria-labelledby="h-skills">
+    <div class="plate"><span class="led cyan"></span><span class="grow">Skills</span><span class="meta">9 drive bays</span></div>
+    <div class="unit-body">
+      <h2 id="h-skills">What’s in the rack</h2>
+      <p class="intro">Each drive bay is a skill area. Tap one to inspect it.</p>
+      <div class="rack" id="rack"></div>
+      <div class="bay-detail" id="bay-detail" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="unit" id="lab" aria-labelledby="h-lab">
+    <div class="plate"><span class="led"></span><span class="grow">AI and the home lab</span><span class="meta">online</span></div>
+    <div class="unit-body">
+      <h2 id="h-lab">Claude at work, a language model at home</h2>
+      <div class="lab" data-unlocks="ollama">
+        <div>
+          <p class="intro" style="margin-bottom:14px">I use Claude every day to read error messages and logs, draft documentation and debug scripts. At home I run my own language model, so I can see how all the pieces fit together.</p>
+          <ul>
+            <li>Claude and generative AI for troubleshooting, documentation and research</li>
+            <li>Prompt engineering, with AI output checked before it’s used</li>
+            <li>Ollama and Llama 3.2 on a self-built Ubuntu Server, driven from Python</li>
+          </ul>
+          <p style="margin:0;font-weight:600">Learning to build AI agents:</p>
+          <ul class="learn">
+            <li>Tool calling</li><li>Memory</li><li>State management</li><li>Result verification</li>
+          </ul>
+        </div>
+        <svg class="diagram" viewBox="0 0 320 420" role="img" aria-labelledby="dg-t dg-d">
+          <title id="dg-t">How the home lab fits together</title>
+          <desc id="dg-d">Claude helps write and debug. A terminal connects over SSH to a Python script, which calls Ollama’s local API, which runs the Llama 3.2 model.</desc>
+          <rect class="bx hot" x="10" y="8" width="300" height="56" rx="6"/><text class="t1" x="26" y="32">Claude</text><text class="t2" x="26" y="52">helps me write, explain and debug</text>
+          <path class="ln dash" d="M160 64V92"/><path class="ah" d="M154 90l6 10 6-10z"/>
+          <rect class="bx" x="10" y="100" width="300" height="56" rx="6"/><text class="t1" x="26" y="124">My terminal</text><text class="t2" x="26" y="144">SSH into my Ubuntu Server</text>
+          <path class="ln" d="M160 156V184"/><path class="ah" d="M154 182l6 10 6-10z"/>
+          <rect class="bx" x="10" y="192" width="300" height="56" rx="6"/><text class="t1" x="26" y="216">Python script</text><text class="t2" x="26" y="236">runs in a virtual environment</text>
+          <path class="ln" d="M160 248V276"/><path class="ah" d="M154 274l6 10 6-10z"/>
+          <rect class="bx" x="10" y="284" width="300" height="56" rx="6"/><text class="t1" x="26" y="308">Ollama</text><text class="t2" x="26" y="328">local API on port 11434</text>
+          <path class="ln" d="M160 340V368"/><path class="ah" d="M154 366l6 10 6-10z"/>
+          <rect class="bx hot" x="10" y="376" width="300" height="36" rx="6"/><text class="t1" x="26" y="399">Llama 3.2, running at home</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="unit" id="contact" aria-labelledby="h-contact">
+    <div class="plate"><span class="led pulse"></span><span class="grow">Contact</span><span class="meta">port open</span></div>
+    <div class="unit-body">
+      <h2 id="h-contact">Open a connection</h2>
+      <p class="intro">I’m looking for a permanent, hands-on role in IT infrastructure, support or operations. Based in Singapore.</p>
+      <div class="contact">
+        <a class="btn" id="mail-btn" href="#">Email me</a>
+        <a class="btn alt" href="https://www.linkedin.com/in/joseph-torres-0a5a2688" target="_blank" rel="noopener">LinkedIn</a>
+        <button class="btn alt" type="button" id="copy">Copy email</button>
+      </div>
+      <p class="mail" id="mail-text"></p>
+    </div>
+  </section>
+
+</main>
+<footer>Designed and built with Claude.</footer>
+</div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+<noscript><p class="wrap">This page is interactive and needs JavaScript. Joseph Pastor Torres is a senior IT infrastructure and support engineer in Singapore, open to a permanent role.</p></noscript>
+
+<script>
+(function(){
+"use strict";
+var root=document.documentElement;
+var reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function $(s,r){return (r||document).querySelector(s)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+var EMAIL=["manong_josh","yahoo.com"].join("@");
+var LINKEDIN="https://www.linkedin.com/in/joseph-torres-0a5a2688";
+
+/* ---------- data ---------- */
+var STAGES=[
+ {n:1,role:"Technical Support (Service Desk)",org:"Department of Social Welfare and Development, Philippines",when:"2003–2004",quest:"Wire up the whole office.",
+  pts:["Installed and maintained the organisation’s LAN.","Supported end-user hardware and software and managed office IT inventory.","Built a project monitoring and reporting system for the CIDSS program."],
+  skills:"LAN, end-user support, reporting",unlocks:["grad"]},
+ {n:2,role:"Files Management Staff, IT Backend Support",org:"SPI Technologies Inc., Philippines",when:"2004–2005",quest:"Keep the files safe.",
+  pts:["Managed FTP file transfers, on-site and off-site backups, file integrity checks and production server file management.","Recognised for excellent performance."],
+  skills:"Backups, FTP, server file management",unlocks:["spi"]},
+ {n:3,role:"Technical Support Specialist II",org:"Dell, eTelecare Global Solutions (US and Canada support), Philippines",when:"2005–2008",quest:"Fix it over the phone.",
+  pts:["Resolved workstation, server, network, printer and email issues for Dell customers.","Promoted to Level 3 support in 2006.","Pioneered the Dell Medium & Large Business and Dell Chat Support Canada teams."],
+  skills:"Level 3 troubleshooting, team building",unlocks:["dcse","promo3","pioneer"]},
+ {n:4,role:"Technical Support Specialist",org:"AT&T U-verse (US support), Philippines",when:"2008–2010",quest:"Get the living room online.",
+  pts:["Supported IPTV, VoIP and high-speed internet services.","Diagnosed connectivity issues across routers, gateways and end-user devices."],
+  skills:"IPTV, VoIP, broadband",unlocks:[]},
+ {n:5,role:"Field Engineer (Client Systems)",org:"Goldtech Resources, Dell Project, Singapore",when:"Jan 2010 – Aug 2015",quest:"Go on site.",
+  pts:["Delivered on-site break-fix for Dell client and enterprise equipment, consistently meeting SLA targets for response time, calls per day and customer satisfaction.","Won the Best Client Engineer and Most Progressive Engineer awards (APAC, 2011).","Advanced from home-user support to medium and large business support."],
+  skills:"On-site break-fix, SLAs, customer relationships",unlocks:["dcfe","bestclient","progressive"]},
+ {n:6,role:"Support Engineer and Project Assistant",org:"SystemsGo Singapore Pte Ltd",when:"Aug 2015 – Aug 2018",quest:"Look after ten clients at once.",
+  pts:["Provided managed services and on-site support to 10+ client companies across Singapore.","Covered for the Service Manager in their absence and helped enforce service quality policies.","Supported the Project Manager on office relocations, infrastructure upgrades and business continuity planning.","Administered Office 365, Exchange, Active Directory, DNS/DHCP, VPN, telephony and MDM."],
+  skills:"Managed services, Microsoft 365, Active Directory, project support",unlocks:["tenclients"]},
+ {n:7,role:"Senior Storage and Enterprise Engineer (FE2), Technical Team Lead",org:"Unisys Singapore Pte Ltd",when:"Aug 2018 – present",quest:"Keep enterprise storage alive.",
+  pts:["Deliver 24x7, Next-Business-Day and 4-hour SLA on-site support for Dell EMC Storage Systems, Pure Storage and Dell PowerEdge environments at enterprise client sites.","Lead installation, expansion and upgrade work on storage and backup appliances, working with project managers, vendors and customers.","Promoted to Team Lead and Senior Storage Engineer in 2023, providing technical leadership to the field engineering team.","Evaluate the reliability, serviceability and quality of CRUs and FRUs in storage systems and servers."],
+  skills:"Enterprise storage, Pure Storage, Dell EMC, NetApp, technical leadership",unlocks:["dellemc","netapp","teamlead","everpure"]}
+];
+
+var ACH=[
+ {id:"grad",icon:"flag",title:"Graduated in Information Technology",desc:"BS Information Technology, Saint Louis University.",year:"2003"},
+ {id:"spi",icon:"star",title:"Recognised for excellent performance",desc:"SPI Technologies, backend IT support.",year:"2004–2005"},
+ {id:"dcse",icon:"cert",title:"Dell Certified Systems Expert (DCSE)",desc:"Certified for Dell desktop and laptop repair.",year:"2005"},
+ {id:"promo3",icon:"up",title:"Promoted to Level 3 support",desc:"Moved up the support tiers at Dell.",year:"2006"},
+ {id:"pioneer",icon:"flag",title:"Pioneer",desc:"Helped launch the Dell Medium & Large Business and Dell Chat Support Canada teams.",year:"2005–2008"},
+ {id:"dcfe",icon:"cert",title:"Dell Certified Field Engineer",desc:"Certified for on-site Dell hardware support.",year:"2010"},
+ {id:"bestclient",icon:"star",title:"Best Client Engineer, APAC",desc:"Regional award for client engineering.",year:"2011"},
+ {id:"progressive",icon:"star",title:"Most Progressive Engineer, APAC",desc:"Regional award for fastest progress.",year:"2011"},
+ {id:"tenclients",icon:"flag",title:"Ten clients, one service standard",desc:"Managed services for 10+ client companies across Singapore.",year:"2015–2018"},
+ {id:"dellemc",icon:"cert",title:"Dell EMC Storage Engineer Certified",desc:"Enterprise storage certification.",year:"2018"},
+ {id:"netapp",icon:"cert",title:"NetApp Storage Certified ASE",desc:"NetApp storage certification.",year:"2018"},
+ {id:"teamlead",icon:"up",title:"Team Lead and Senior Storage Engineer",desc:"Promoted at Unisys Singapore.",year:"2023"},
+ {id:"everpure",icon:"cert",title:"Pure Storage (Everpure) Certified Field Engineer",desc:"Certified for on-site Everpure hardware support.",year:"2024"},
+ {id:"ollama",icon:"chip",title:"Hello, Ollama",desc:"First reply from a language model running on my own server.",year:"2026"},
+ {id:"secret",icon:"lock",title:"Secret achievement",desc:"Find the hidden command in the terminal.",year:"",
+  reveal:{title:"Curious visitor",desc:"Found the hidden command in the terminal."}}
+];
+
+var SKILLS=[
+ ["Storage and backup","Dell EMC Unity, PowerStore and Data Domain; Pure Storage (Everpure); NetApp. Installation, expansion, upgrades, break-fix and CRU/FRU evaluation."],
+ ["Servers and data centre","Dell PowerEdge deployment, teardown, upgrade and troubleshooting. Rack and stack, cabling, server room management, and 24x7 and 4-hour SLA on-site response."],
+ ["Systems and virtualization","VMware vSphere, Windows, Linux, macOS, Active Directory, Exchange, DNS, DHCP, file and print services, and MDM."],
+ ["Cloud and productivity","Office 365 and Google Workspace, plus user and access administration."],
+ ["Networking","Cisco router configuration and backup, LAN/WLAN/WWAN design and maintenance, VPN (Cisco AnyConnect, Junos Pulse), and telephony (Cisco, Avaya)."],
+ ["Service management","ServiceNow, Remedy, SCCM, Salesforce and SolarWinds. Incident and service request management, and SLA and KPI reporting."],
+ ["End-user support","Desktops, laptops, servers, printers, email, IPTV, VoIP and broadband troubleshooting, from Level 1 to Level 3."],
+ ["Projects and continuity","Business continuity planning, office relocations, infrastructure upgrades, and vendor and client coordination."],
+ ["AI and automation","Claude and generative AI for troubleshooting, documentation and scripting. Prompt engineering, local models with Ollama, and Python."]
+];
+
+/* ---------- render ---------- */
+$("#levels").innerHTML=STAGES.map(function(s){
+  var cur=s.n===STAGES.length;
+  return '<li><details class="level'+(cur?' current':'')+'" data-unlocks="'+s.unlocks.join(" ")+'"'+(cur?' open':'')+'>'+
+   '<summary><span class="lv">'+s.n+'</span><span class="head"><span class="role">'+esc(s.role)+'</span><span class="org">'+esc(s.org)+'</span><span class="when">'+esc(s.when)+'</span>'+
+   (cur?'<span class="here"><span class="led pulse"></span>Current stage</span>':'')+
+   '</span><span class="tog" aria-hidden="true"></span></summary>'+
+   '<div class="more"><p class="quest">Quest: '+esc(s.quest)+'</p><ul>'+s.pts.map(function(p){return '<li>'+esc(p)+'</li>'}).join("")+'</ul>'+
+   '<p class="unl"><b>Skills unlocked:</b> '+esc(s.skills)+'</p></div></details></li>';
+}).join("");
+
+$("#badges").innerHTML=ACH.map(function(a){
+  return '<li class="badge" data-badge="'+a.id+'"><span class="hex"><svg aria-hidden="true"><use href="#i-'+a.icon+'"/></svg></span>'+
+   '<div><h3>'+esc(a.title)+'</h3><p class="d">'+esc(a.desc)+'</p><span class="y"><span class="state">Locked</span>'+(a.year?' &middot; '+esc(a.year):'')+'</span></div></li>';
+}).join("");
+
+var rack=$("#rack"), detail=$("#bay-detail");
+rack.innerHTML=SKILLS.map(function(s,i){
+  return '<button class="bay" type="button" data-i="'+i+'" aria-pressed="'+(i===0)+'"><span class="led"></span>'+esc(s[0])+'</button>';
+}).join("");
+function showBay(i){
+  Array.prototype.forEach.call(rack.children,function(b){b.setAttribute("aria-pressed",String(+b.dataset.i===i))});
+  detail.innerHTML="<h3>"+esc(SKILLS[i][0])+"</h3><p>"+esc(SKILLS[i][1])+"</p>";
+}
+rack.addEventListener("click",function(e){var b=e.target.closest(".bay");if(b)showBay(+b.dataset.i)});
+showBay(0);
+
+/* ---------- contact ---------- */
+$("#mail-btn").href="mailto:"+EMAIL;
+$("#mail-text").textContent=EMAIL;
+$("#copy").addEventListener("click",function(){
+  var btn=this;
+  function done(t){btn.textContent=t;setTimeout(function(){btn.textContent="Copy email"},2000)}
+  try{navigator.clipboard.writeText(EMAIL).then(function(){done("Copied")},function(){done("Copy it from above")})}
+  catch(e){done("Copy it from above")}
+});
+
+/* ---------- toast + unlock ---------- */
+var toast=$("#toast"), tq=[], tBusy=false;
+function say(html){tq.push(html);if(!tBusy)nextToast()}
+function nextToast(){
+  if(!tq.length){tBusy=false;return}
+  tBusy=true;toast.innerHTML=tq.shift();toast.classList.add("show");
+  setTimeout(function(){toast.classList.remove("show");setTimeout(nextToast,reduce?0:350)},2800);
+}
+var on={}, onCount=0, pending=[], flushT=null;
+function updateCount(){
+  var t=onCount+" of "+ACH.length+" unlocked";
+  $("#count").textContent=t;$("#count-plate").textContent=t;
+}
+function flush(){
+  var n=pending.length;if(!n)return;
+  if(n>3){say("<b>"+n+" achievements unlocked</b>")}
+  else pending.forEach(function(a){say("<b>Achievement unlocked</b><br>"+esc(a.reveal?a.reveal.title:a.title))});
+  pending=[];
+}
+function unlock(id,silent){
+  if(on[id])return;
+  var a=ACH.filter(function(x){return x.id===id})[0];if(!a)return;
+  on[id]=true;onCount++;
+  var el=$('[data-badge="'+id+'"]');
+  if(el){
+    el.classList.add("on");
+    el.querySelector(".state").textContent="Unlocked";
+    if(a.reveal){el.querySelector("h3").textContent=a.reveal.title;el.querySelector(".d").textContent=a.reveal.desc}
+    if(!reduce){el.classList.remove("pop");void el.offsetWidth;el.classList.add("pop")}
+  }
+  updateCount();
+  if(!silent){pending.push(a);clearTimeout(flushT);flushT=setTimeout(flush,150)}
+}
+updateCount();
+$("#unlock-all").addEventListener("click",function(){
+  ACH.forEach(function(a){if(a.id!=="secret")unlock(a.id,true)});
+  say("<b>All career achievements unlocked</b>");
+});
+
+if("IntersectionObserver" in window){
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        (e.target.getAttribute("data-unlocks")||"").split(" ").filter(Boolean).forEach(function(id){unlock(id)});
+        io.unobserve(e.target);
+      }
+    });
+  },{rootMargin:"-42% 0px -42% 0px",threshold:0});
+  Array.prototype.forEach.call(document.querySelectorAll("[data-unlocks]"),function(el){io.observe(el)});
+}else{
+  ACH.forEach(function(a){if(a.id!=="secret")unlock(a.id,true)});
+}
+
+/* ---------- XP meter ---------- */
+var xp=$("#xp"), ticking=false;
+function prog(){
+  var h=document.documentElement.scrollHeight-window.innerHeight;
+  var p=h>0?Math.min(1,Math.max(0,window.scrollY/h)):0;
+  root.style.setProperty("--p",p.toFixed(4));
+  xp.textContent=Math.round(p*100);
+  ticking=false;
+}
+window.addEventListener("scroll",function(){if(!ticking){ticking=true;requestAnimationFrame(prog)}},{passive:true});
+window.addEventListener("resize",prog);
+prog();
+
+/* ---------- terminal ---------- */
+var out=$("#out"), form=$("#form"), input=$("#cmd"), termEl=$("#term");
+function line(html,cls){var d=document.createElement("div");if(cls)d.className=cls;d.innerHTML=html;out.appendChild(d);out.scrollTop=out.scrollHeight;return d}
+function echo(text){
+  var d=document.createElement("div");d.className="cmd";
+  var p=document.createElement("span");p.className="ps";p.textContent="joseph@rack:~$ ";
+  var t=document.createElement("span");t.textContent=text;
+  d.appendChild(p);d.appendChild(t);out.appendChild(d);out.scrollTop=out.scrollHeight;return t;
+}
+var CERTS=[
+ ["Pure Storage (Everpure) Certified Field Engineer","2024"],
+ ["Dell EMC Storage Engineer Certified","2018"],
+ ["NetApp Storage Certified ASE","2018"],
+ ["Dell Certified Field Engineer","2010"],
+ ["Dell Certified Systems Expert (DCSE)","2005"]
+];
+function hire(){
+  unlock("secret");
+  return ["[sudo] password for recruiter: ********","Access granted.","Offer letter queued. Start date: whenever suits you.","<span class=\"dim\">You found the secret command.</span>"];
+}
+var CMDS={
+ "help":function(){return [
+  "Commands you can try:",
+  "  <b>whoami</b>         who I am",
+  "  <b>uptime</b>         how long I’ve been at this",
+  "  <b>status</b>         what I’m looking for",
+  "  <b>ls certs</b>       my certifications",
+  "  <b>skills</b>         what I work with",
+  "  <b>journey</b>        the seven stages",
+  "  <b>achievements</b>   what you’ve unlocked so far",
+  "  <b>ai</b>             Claude, Ollama and the home lab",
+  "  <b>contact</b>        how to reach me",
+  "  <b>clear</b>          clear the screen",
+  "<span class=\"dim\">There is also one secret command. Hint: it’s what a recruiter would type.</span>"]},
+ "whoami":function(){return ["Joseph Pastor Torres","Senior IT infrastructure and technical support engineer, Singapore."]},
+ "uptime":function(){return ["up 20+ years in IT, 15+ of them in Singapore, with 24x7 SLAs met along the way."]},
+ "status":function(){return ["Open to a permanent, long-term, hands-on technical role.","Individual contributor. Storage, infrastructure, support or operations."]},
+ "ls":function(){return ["certs/  journey/  skills/  achievements/  ai/  contact/"]},
+ "ls certs":function(){return CERTS.map(function(c){return esc(c[0])+" <span class=\"dim\">("+c[1]+")</span>"})},
+ "skills":function(){return SKILLS.map(function(s){return "• "+esc(s[0])}).concat(["<span class=\"dim\">Tap a drive bay in the <a href=\"#skills\">Skills</a> section for details.</span>"])},
+ "journey":function(){return STAGES.map(function(s){return "Stage "+s.n+": "+esc(s.role.split(",")[0])+" <span class=\"dim\">("+esc(s.when)+")</span>"}).concat(["<span class=\"dim\"><a href=\"#journey\">Jump to the Journey</a> to open each stage.</span>"])},
+ "achievements":function(){
+   return ACH.filter(function(a){return a.id!=="secret"||on.secret}).map(function(a){
+     var t=a.reveal&&on[a.id]?a.reveal.title:a.title;
+     return (on[a.id]?"[x] ":"[ ] ")+esc(t)}).concat(["<span class=\"dim\">"+onCount+" of "+ACH.length+" unlocked. <a href=\"#achievements\">See the board</a>.</span>"]);
+ },
+ "ai":function(){return ["Claude every day for troubleshooting, documentation and scripting.","Ollama with Llama 3.2 on my own Ubuntu Server, driven from Python.","Learning: tool calling, memory, state management, result verification.","<span class=\"dim\"><a href=\"#lab\">See how the lab fits together</a>.</span>"]},
+ "contact":function(){return ["Email: <a href=\"mailto:"+EMAIL+"\">"+EMAIL+"</a>","LinkedIn: <a href=\""+LINKEDIN+"\" target=\"_blank\" rel=\"noopener\">joseph-torres-0a5a2688</a>"]},
+ "hire-me":hire
+};
+var ALIAS={"ls certs/":"ls certs","hire me":"hire-me","ping hire-me":"hire-me","sudo hire joseph":"hire-me","sudo hire-me":"hire-me","hire joseph":"hire-me","cat status":"status","ls -la":"ls"};
+
+var BOOT=[
+ ["whoami",CMDS.whoami()],
+ ["uptime",CMDS.uptime()],
+ ["status",CMDS.status()]
+];
+var skip=reduce;
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
+["pointerdown","keydown"].forEach(function(ev){termEl.addEventListener(ev,function(){skip=true})});
+
+var bootDone=(async function(){
+  for(var i=0;i<BOOT.length;i++){
+    var t=echo(""),cmd=BOOT[i][0];
+    if(skip){t.textContent=cmd}
+    else{
+      for(var k=0;k<cmd.length;k++){
+        if(skip){t.textContent=cmd;break}
+        t.textContent+=cmd[k];
+        await sleep(32+Math.random()*34);
+      }
+      if(skip)t.textContent=cmd;
+    }
+    BOOT[i][1].forEach(function(l){line(l)});
+    if(!skip)await sleep(420);
+  }
+  line("Type <b>help</b>, or tap a command below.","dim");
+  out.setAttribute("aria-live","polite");
+})();
+
+var hist=[], hi=0;
+async function run(raw){
+  await bootDone;
+  echo(raw);
+  var cmd=raw.trim().replace(/\s+/g," ");
+  if(!cmd)return;
+  hist.push(cmd);hi=hist.length;
+  var key=cmd.toLowerCase();
+  if(key==="clear"){out.innerHTML="";return}
+  var f=CMDS[key]||CMDS[ALIAS[key]];
+  if(f){f().forEach(function(l){line(l)})}
+  else{line("command not found: "+esc(cmd)+". Type <b>help</b>.","dim")}
+}
+form.addEventListener("submit",function(e){e.preventDefault();var v=input.value;input.value="";run(v)});
+input.addEventListener("keydown",function(e){
+  if(e.key==="ArrowUp"&&hist.length){e.preventDefault();hi=Math.max(0,hi-1);input.value=hist[hi]||""}
+  else if(e.key==="ArrowDown"&&hist.length){e.preventDefault();hi=Math.min(hist.length,hi+1);input.value=hist[hi]||""}
+});
+$("#chips").addEventListener("click",function(e){var b=e.target.closest(".chip");if(b)run(b.dataset.cmd)});
+})();
+</script>
+</body>
+</html>
